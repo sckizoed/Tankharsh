@@ -28,8 +28,30 @@ public:
 	UFUNCTION(BlueprintCallable, Category = myTankCategory )
 	void setTurretChildActor(UChildActorComponent* TurretFromBP);
 
+	UFUNCTION(BlueprintCallable, Category = myTankCategory)
+	void setBarrelChildActor(UChildActorComponent* barrelFromBP);
+
+	UFUNCTION(BlueprintCallable, Category = myTankCategory)
+		void setTankChildActor(UChildActorComponent* TankFromBP);
+	
+
 private:
-	void rotateTurret();
-	void invertRotateTurret();
+	UPROPERTY(editAnyWhere)
+	float rotationSpeed = 30.f;
+
+	UPROPERTY(editAnyWhere)
+	float distanceSpeed = 30.f;
+
+
+	//rotate my turret by speed
 	UChildActorComponent* ourTurret;
+	void rotateTurret(float speed);
+
+	UChildActorComponent* uptBarrel;
+	void elevateBarrel(float speed);
+
+	UChildActorComponent* Tank;
+	void rotateTank(float speed);
+	void moveTank(float speed);
+	
 };

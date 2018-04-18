@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankC.h"
+#include "Engine/World.h"
 #include "Components/ActorComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/InputComponent.h"
@@ -24,30 +25,63 @@ void ATankC::BeginPlay()
 void ATankC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//
+}
+
+void ATankC::rotateTurret(float speed) {
+	if (!ourTurret) {return;}
+	float rotation = GetWorld()->DeltaTimeSeconds * speed* rotationSpeed;
+	ourTurret->AddRelativeRotation(FRotator(0, rotation, 0));
+}
+
+void ATankC::elevateBarrel(float speed)
+{
+	if (!uptBarrel) {return;}
+	float rotation = GetWorld()->DeltaTimeSeconds * speed* rotationSpeed;
+		uptBarrel->AddRelativeRotation(FRotator(rotation, 0, 0));
+}
+
+void ATankC::rotateTank(float speed)
+{
+	if (!Tank) {return;}
+	float rotation = GetWorld()->DeltaTimeSeconds * speed* rotationSpeed;
+	Tank->AddRelativeRotation(FRotator(0, rotation,0));
 
 }
 
-void ATankC::rotateTurret() {
-	ourTurret->SetRelativeRotation(FRotator(0, -45.f, 0));
+void ATankC::moveTank(float speed)
+{
+	if (!Tank) { return; }
+	float distance = GetWorld()->DeltaTimeSeconds * speed* distanceSpeed;
+	Tank->AddRelativeLocation(Tank->GetForwardVector() * distance);
 
 }
-
-void ATankC::invertRotateTurret(){
-	ourTurret->SetRelativeRotation(FRotator(0, 45.f , 0));
-}
-
 
 // Called to bind functionality to input
 void ATankC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	UE_LOG(LogTemp, Warning, TEXT("Setup player input component"));
-	InputComponent->BindAction("Turret_clockwise", IE_Pressed, this, &ATankC::rotateTurret);
-	InputComponent->BindAction("Turret_nonclockwise", IE_Pressed, this, &ATankC::invertRotateTurret);
+	InputComponent->BindAxis("RotateTurret",this, &ATankC::rotateTurret);
+	InputComponent->BindAxis("upTurret", this, &ATankC::elevateBarrel);
+	InputComponent->BindAxis("moveTank", this, &ATankC::moveTank);
+	InputComponent->BindAxis("rotateTank", this, &ATankC::rotateTank);
 }
 
 void ATankC::setTurretChildActor(UChildActorComponent * TurretFromBP)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Child component being used "));
+	if (!TurretFromBP) { return; }
 	ourTurret = TurretFromBP;
+}
+
+void ATankC::setBarrelChildActor(UChildActorComponent * barrelFromBP)
+{
+	if (!barrelFromBP) { return; }
+	uptBarrel = barrelFromBP;
+}
+
+
+void ATankC::setTankChildActor(UChildActorComponent * TankFromBP)
+{
+	if (!TankFromBP) { return; }
+	Tank = TankFromBP;
 }

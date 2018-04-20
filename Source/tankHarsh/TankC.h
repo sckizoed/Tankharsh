@@ -32,7 +32,7 @@ public:
 	void setBarrelChildActor(UChildActorComponent* barrelFromBP);
 
 	UFUNCTION(BlueprintCallable, Category = myTankCategory)
-		void setTankChildActor(UChildActorComponent* TankFromBP);
+	void setTankChildActor(UChildActorComponent* TankFromBP);
 	
 
 private:

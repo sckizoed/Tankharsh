@@ -22,11 +22,16 @@ public:
 	AFinalTank* getControllerTank() const;
 
 private:
+
+	UPROPERTY(editAnyWhere)
+	float CrossHairLocationX = 0.5f;
+	UPROPERTY(editAnyWhere)
+	float CrossHairLocationY = 0.3333f;
+	UPROPERTY(editAnyWhere)
+	float FireRange = 1000000.f;
+
 	void AimThrowUIPoint();
-	bool GetSightRayHitLocation(FVector hitLocation);
-
-	const FVector getEndTrace();
-
-	const FVector getStartTrace();
-	
+	bool GetSightRayHitLocation(FVector& hitLocation) const;	
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& WorldDirecton) const;
+	bool GetLookVectorHitLocation(FVector WorldDirecton, FVector& HitLocation) const;
 };

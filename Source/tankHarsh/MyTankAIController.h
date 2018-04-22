@@ -17,7 +17,7 @@ class TANKHARSH_API AMyTankAIController : public AAIController
 	
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void Tick(float DeltaTime) override;
 
 public:
 	AFinalTank* getAIControllerTank() const;

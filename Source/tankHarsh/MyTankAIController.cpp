@@ -20,6 +20,12 @@ void AMyTankAIController::BeginPlay()
 
 }
 
+void AMyTankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
 AFinalTank* AMyTankAIController::getAIControllerTank() const
 {
 	return Cast<AFinalTank>(GetPawn());

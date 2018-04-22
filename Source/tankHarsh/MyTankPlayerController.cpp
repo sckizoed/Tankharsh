@@ -7,6 +7,7 @@
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
 
+
 void AMyTankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -19,8 +20,6 @@ void AMyTankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *(tanki->GetName()));
 	}
 }
-
-
 
 void AMyTankPlayerController::Tick(float DeltaTime)
 {
@@ -41,39 +40,54 @@ void AMyTankPlayerController::AimThrowUIPoint()
 	FVector hitLocation; //OUT parameter
 	if (GetSightRayHitLocation(hitLocation))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("LineTrace show location: %s"),*hitLocation.ToString())
+		UE_LOG(LogTemp, Warning, TEXT("location aimed at : %s"), *(hitLocation.ToString()));
 	}
 
 }
 
 bool AMyTankPlayerController::GetSightRayHitLocation(FVector& hitLocation) const
 {
+	int32 viewPortX, viewPortY;
+	GetViewportSize(viewPortX, viewPortY);
+	FVector lookDirection;
 
+	FVector2D ScreenLocation = FVector2D(viewPortX * CrossHairLocationX, viewPortY * CrossHairLocationY);
+
+	if (GetLookDirection(ScreenLocation, lookDirection))
+	{
+		GetLookVectorHitLocation(lookDirection, hitLocation);
+		return true;
+	}
+	
 	return false;
 }
 
-
-
-const FVector AMyTankPlayerController::getStartTrace()
+bool AMyTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& WorldDirecton) const
 {
-	FVector playerViewPointLocation;
-	FRotator playerViewPointRotation;
-
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		OUT playerViewPointLocation,
-		OUT playerViewPointRotation);
-
-	return (playerViewPointLocation);
+	FVector WorldLocation;
+	return (DeprojectScreenPositionToWorld(
+		  ScreenLocation.X
+		, ScreenLocation.Y
+		, WorldLocation
+		, WorldDirecton));
 }
 
-const FVector AMyTankPlayerController::getEndTrace()
+bool AMyTankPlayerController::GetLookVectorHitLocation(FVector lookDirecton, FVector& HitLocation) const
 {
-	FVector playerViewPointLocation;
-	FRotator playerViewPointRotation;
+	FHitResult hitResult;
+	FVector startLocation = PlayerCameraManager->GetCameraLocation();
+	FVector EndLocation = startLocation + (lookDirecton * FireRange);
+	
+	if (GetWorld()->LineTraceSingleByChannel(
+		hitResult,
+		startLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility))
+	{
+		HitLocation = hitResult.Location;
+		return true;
+	}
 
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		OUT playerViewPointLocation,
-		OUT playerViewPointRotation);
-
-	return (playerViewPointLocation + playerViewPointRotation.Vector());
+	HitLocation = FVector(0);
+	return false;
 }

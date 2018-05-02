@@ -12,17 +12,13 @@ void AMyTankAIController::BeginPlay()
 	if (!tanko) {
 		UE_LOG(LogTemp, Warning, TEXT("IA can not detect you"));
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AI deteced the : %s"), *(tanko->GetName()));
-	}
-
-
 }
 
 void AMyTankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	getAIControllerTank()->aimAt(getPlayerTank()->GetActorLocation());
 
 }
 

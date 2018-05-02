@@ -40,7 +40,7 @@ void AMyTankPlayerController::AimThrowUIPoint()
 	FVector hitLocation; //OUT parameter
 	if (GetSightRayHitLocation(hitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("location aimed at : %s"), *(hitLocation.ToString()));
+		getControllerTank()->aimAt(hitLocation);
 	}
 
 }

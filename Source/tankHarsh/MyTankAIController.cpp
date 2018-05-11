@@ -2,6 +2,7 @@
 
 #include "MyTankAIController.h"
 #include "Engine/World.h"
+#include "FinalTank.h"
 #include "GameFramework/PlayerController.h"
 
 void AMyTankAIController::BeginPlay()

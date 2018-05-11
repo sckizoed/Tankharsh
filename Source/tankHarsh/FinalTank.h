@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
 #include "FinalTank.generated.h"
+
+class UTankBarrel;
+class UTankAimingComponent;
 
 UCLASS()
 class TANKHARSH_API AFinalTank : public APawn
@@ -18,7 +20,7 @@ public:
 	void aimAt(FVector TankLocation);
 
 	UFUNCTION(BlueprintCallable, category = barrel)
-	void setBarrelRefrece(UStaticMeshComponent* BarrelToSet);
+	void setBarrelRefrece(UTankBarrel* BarrelToSet);
 
 	UPROPERTY(EditAnyWhere, Category = firing)
 	float lunchSpeed = 10000;
@@ -28,7 +30,5 @@ protected:
 	virtual void BeginPlay() override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	UTankAimingComponent* aimingComponent = nullptr;
 };

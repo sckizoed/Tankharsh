@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FinalTank.h"
-
+#include "TankAimingComponent.h"
 
 // Sets default values
 AFinalTank::AFinalTank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	aimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aim Component"));
 }
 
@@ -17,18 +17,12 @@ void AFinalTank::BeginPlay()
 	Super::BeginPlay();
 }
 
-// Called every frame
-void AFinalTank::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 void AFinalTank::aimAt(FVector TankLocation)
 {
 	aimingComponent->aimAt(TankLocation, lunchSpeed);
 }
 
-void AFinalTank::setBarrelRefrece(UStaticMeshComponent * BarrelToSet)
+void AFinalTank::setBarrelRefrece(UTankBarrel* BarrelToSet)
 {
 
 	aimingComponent->setBarrelRefrece(BarrelToSet);

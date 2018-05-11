@@ -3,6 +3,7 @@
 #include "MyTankPlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
+#include "FinalTank.h"
 #include "Components/ActorComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"

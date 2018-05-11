@@ -2,10 +2,10 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "FinalTank.h"
 #include "GameFramework/PlayerController.h"
 #include "MyTankPlayerController.generated.h"
 
+class AFinalTank;
 /**
  * 
  */
